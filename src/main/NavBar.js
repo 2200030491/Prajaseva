@@ -1,37 +1,59 @@
-import React from 'react'
-import { Routes, Route, Link } from 'react-router-dom';
-import Home from './Home';
-import CitizenRegistration from '../citizens/CitizenRegistration';
-import logo from '../images/NavbarLogo.png';
-import './NavBar.css';
-import CitizenLogin from '../citizens/CitizenLogin';
-import PoliticianLogin from '../politicans/PoliticianLogin';
-export default function NavBar() {
+import React from "react";
+import "./NavBar.css";
+import logo from '../images/NavbarLogo.png'
+import { Route, Routes, useNavigate } from "react-router-dom";
+import Home from "./Home";
+import CitizenLogin from "./CitizenLogin";
+import PoliticianLogin from "./PoliticianLogin";
+import Registration from "./Registration";
+import ContactUs from "./ContactUs";
+import AdminLogin from "./AdminLogin";
+export default function NavBar({onAdminLogin,onCitizenLogin,onPoliticianLogin})
+{
+const navigate = useNavigate();
+    const register = ()=>{
+        navigate("/register");
+    }
+    const signin = ()=>{
+        navigate("/citizen");
+    }
+    
+    // const logout = ()=>{
+    //   localStorage.removeItem('isCitizenLogIn')
+    //   localStorage.removeItem('citizen')
+    //   navigate('/citizen');
+    //   window.location.reload();
+    // }
   return (
-    <div className='app-container'>
-    <nav className='navbar'>
-      <div className="navbar-brand">
-        <img src={logo} alt="LOGO" className='logo' />
-        <h3>Praja Seva</h3>
+    <div>
+        <nav className="navbar">
+      <div className="navbar-logo">
+        <img src={logo} alt="Praja Seva Logo" />
+        <span>Praja Seva</span>
       </div>
-      <ul className="nav-links">
-        <li><Link to="/">HOME</Link></li>
-        <li><Link to="/citizen">CITIZEN</Link></li>
-        <li><Link to="/politician">POLITICIAN</Link></li>
-        <li><Link to="/contactus">CONTACT US</Link></li>
-        <li><Link to="/register" className='signup'>SignUp</Link></li>
-        <li><Link to="/register" className='register'>Register</Link></li>
+      <ul className="navbar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/citizen">Citizen</a></li>
+        <li><a href="/politician">Politicians</a></li>
+        <li><a href="/contactus">Contact</a></li>
       </ul>
+          <div className="navbar-actions">
+            <button className="signin-btn" onClick={signin}>Sign in</button>
+            <button className="register-btn" onClick={register}>Register</button>
+            {/* <button className="register-btn" onClick={logout}>Lgout</button> */}
+          </div>
     </nav>
     <Routes>
-    <Route path='/' element={<Home/>} exact />
-        <Route path='/citizen' element={<CitizenLogin/>}  exact/>
-        <Route path='/politician' element={<PoliticianLogin/>}  exact/>
-        <Route path='/register' element={<CitizenRegistration/>} exact/>
-        
-    </Routes>
-    
-    </div>
+     <Route path="/" element={<Home/>} />
+     <Route path="/citizen" element={<CitizenLogin onCitizenLogin={onCitizenLogin}/>} />
+     <Route path="/politician" element={<PoliticianLogin onPoliticianLogin={onPoliticianLogin} />} />
+     <Route path="/adminlogin" element={<AdminLogin onAdminLogin={onAdminLogin} />} />
+     <Route path="/register" element={<Registration/>} />
+     <Route path="/contactus" element={<ContactUs/>} />
 
-  )
-}
+  </Routes>
+    </div>
+    
+  );
+ 
+};
